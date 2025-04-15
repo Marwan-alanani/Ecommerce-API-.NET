@@ -11,6 +11,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServicesAbstraction", "ServicesAbstraction\ServicesAbstraction.csproj", "{FDD24150-2D88-4F34-AC72-2B6DA26AA67F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{B9B005DD-B6BC-49E9-B6E0-4A54657E6417}"
+	ProjectSection(SolutionItems) = preProject
+		DbInitializer.cs = DbInitializer.cs
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence", "Persistence\Persistence.csproj", "{51928430-FBA8-43D6-B1C2-E07442DFA74F}"
 EndProject
