@@ -1,4 +1,5 @@
 using Domain.Models;
+using Microsoft.Extensions.Configuration;
 
 namespace Services.MappingProfiles;
 
@@ -20,11 +21,11 @@ public class ProductProfile : Profile
     }
 }
 
-public class PictureUrlResolver : IValueResolver<Product, ProductResponse, string>
+public class PictureUrlResolver(IConfiguration configuration) : IValueResolver<Product, ProductResponse, string>
 {
     public string Resolve(Product source, ProductResponse destination, string destMember, ResolutionContext context)
     {
         if (string.IsNullOrEmpty(source.PictureUrl)) return "";
-        return $"http://localhost:5000/{source.PictureUrl}" ;
+        return $"{configuration["BaseUrl"]}/{source.PictureUrl}" ;
     }
 }
