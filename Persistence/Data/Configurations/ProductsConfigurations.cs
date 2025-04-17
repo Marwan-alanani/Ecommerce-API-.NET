@@ -9,7 +9,7 @@ public class ProductsConfigurations : IEntityTypeConfiguration<Product>
 
         builder.HasOne(p => p.ProductType)
             .WithMany()
-            .HasForeignKey(p => p.ProductTypeId);
+            .HasForeignKey(p => p.TypeId);
 
         builder.Property(p => p.Price)
             .HasColumnType("decimal(10,3)");

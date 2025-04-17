@@ -53,7 +53,7 @@ public class DbInitializer(StoreDbContext context) : IDbInitializer
             if (!context.Set<Product>().Any())
             {
                 // Read From File
-                var data = await File.ReadAllTextAsync("../Persistence/Data/Seeding/product.json");
+                var data = await File.ReadAllTextAsync("../Persistence/Data/Seeding/products.json");
 
                 // Convert to C# code or deserialize
                 var objects = JsonSerializer.Deserialize<List<Product>>(data);

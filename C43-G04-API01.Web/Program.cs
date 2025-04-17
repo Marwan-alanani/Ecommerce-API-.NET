@@ -1,9 +1,10 @@
-using AutoMapper;
 using Domain.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using Persistence.Data;
 using Persistence.Repositories;
+using Services;
+using ServicesAbstraction;
 
 namespace C43_G04_API01.Web;
 
@@ -23,6 +24,7 @@ public class Program
         builder.Services.AddScoped<IDbInitializer, DbInitializer>();
         builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
         builder.Services.AddAutoMapper(typeof(Services.AssemblyReference).Assembly);
+        builder.Services.AddScoped<IServiceManager, ServiceManager>();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 

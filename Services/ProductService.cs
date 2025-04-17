@@ -18,7 +18,7 @@ public class ProductService(IUnitOfWork unitOfWork,IMapper mapper): IProductServ
         return mapper.Map<ProductResponse>(product);
     }
 
-    public async Task<IEnumerable<BrandResponse>> GetBrandAsync()
+    public async Task<IEnumerable<BrandResponse>> GetBrandsAsync()
     {
         // 1. Get Repository using unit of work GetRepository()
         var repo = unitOfWork.GetRepository<ProductBrand, int>();
@@ -27,7 +27,7 @@ public class ProductService(IUnitOfWork unitOfWork,IMapper mapper): IProductServ
         return mapper.Map<IEnumerable<ProductBrand>, IEnumerable<BrandResponse>>(brands);
     }
 
-    public async Task<IEnumerable<TypeResponse>> GetTypeAsync()
+    public async Task<IEnumerable<TypeResponse>> GetTypesAsync()
     {
         // 1. Get Repository using unit of work GetRepository()
         var repo = unitOfWork.GetRepository<ProductType, int>();

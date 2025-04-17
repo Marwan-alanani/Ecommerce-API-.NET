@@ -9,5 +9,5 @@ public class Product : BaseEntity<int>
     public ProductBrand ProductBrand { get; set; } // Reference Navigational Property
     public int BrandId { get; set; } // FK
     public ProductType ProductType { get; set; } // Reference Navigational Property
-    public int ProductTypeId { get; set; } // FK
+    public int TypeId { get; set; } // FK
 }

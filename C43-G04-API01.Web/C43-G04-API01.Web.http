@@ -1,6 +1,12 @@
-@C43_G04_API01= http://localhost:5180
+@C43_G04_API01= http://localhost:5000
 
 GET {{C43_G04_API01}}/weatherforecast/
 Accept: application/json
 
-###
+### Get products
+GET {{C43_G04_API01}}/api/Products
+Accept: application/json
+
+### Get product by id
+GET {{C43_G04_API01}}/api/Products/18
+Accept: application/json

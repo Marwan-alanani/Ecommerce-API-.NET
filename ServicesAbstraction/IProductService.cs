@@ -7,6 +7,6 @@ public interface IProductService
 {
     Task<IEnumerable<ProductResponse>> GetAllProductsAsync();
     Task<ProductResponse> GetProductAsync(int id);
-    Task<IEnumerable<BrandResponse>> GetBrandAsync();
-    Task<IEnumerable<TypeResponse>> GetTypeAsync();
+    Task<IEnumerable<BrandResponse>> GetBrandsAsync();
+    Task<IEnumerable<TypeResponse>> GetTypesAsync();
 }
