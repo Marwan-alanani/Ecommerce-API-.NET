@@ -19,7 +19,19 @@ internal class GenericRepository<TEntity, TKey>(StoreDbContext context)
     public async Task<TEntity?> GetAsync(TKey key) =>
         await context.Set<TEntity>().FindAsync(key);
 
+    public async Task<TEntity?> GetAsync(ISpecifications<TEntity> specifications)
+    {
+        return await SpecificatonsEvaluator.
+            CreateQuery(context.Set<TEntity>(), specifications).FirstOrDefaultAsync();
+    }
+
 
     public async Task<IEnumerable<TEntity>> GetAllAsync() =>
         await context.Set<TEntity>().ToListAsync();
+
+    public async Task<IEnumerable<TEntity>> GetAllAsync(ISpecifications<TEntity> specifications)
+    {
+        return await SpecificatonsEvaluator.
+            CreateQuery(context.Set<TEntity>(), specifications).ToListAsync();
+    }
 }

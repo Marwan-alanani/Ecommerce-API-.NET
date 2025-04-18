@@ -9,5 +9,7 @@ public interface IGenericRepository<TEntity, TKey> where TEntity : BaseEntity<TK
     void Delete(TEntity entity);
 
     Task<TEntity?> GetAsync(TKey key);
+    Task<TEntity?> GetAsync(ISpecifications<TEntity> specifications);
     Task<IEnumerable<TEntity>> GetAllAsync();
+    Task<IEnumerable<TEntity>> GetAllAsync(ISpecifications<TEntity> specifications);
 }

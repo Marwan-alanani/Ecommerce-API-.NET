@@ -1,20 +1,24 @@
 global using AutoMapper;
 global using Domain.Contracts;
 using Domain.Models;
+using Services.Specifications;
 
 namespace Services;
 
-public class ProductService(IUnitOfWork unitOfWork,IMapper mapper): IProductService
+public class ProductService(IUnitOfWork unitOfWork, IMapper mapper) : IProductService
 {
     public async Task<IEnumerable<ProductResponse>> GetAllProductsAsync()
     {
-        var products = await unitOfWork.GetRepository<Product, int>().GetAllAsync();
+        var specifications = new ProductWithBrandAndTypeSpecification(); // Object that holds query parameters
+        var products = await unitOfWork.GetRepository<Product, int>()
+            .GetAllAsync(specifications);
         return mapper.Map<IEnumerable<ProductResponse>>(products);
     }
 
     public async Task<ProductResponse> GetProductAsync(int id)
     {
-        var product = await unitOfWork.GetRepository<Product, int>().GetAsync(id);
+        var specifications = new ProductWithBrandAndTypeSpecification(id);
+        var product = await unitOfWork.GetRepository<Product, int>().GetAsync(specifications);
         return mapper.Map<ProductResponse>(product);
     }
 
