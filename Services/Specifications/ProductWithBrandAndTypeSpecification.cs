@@ -15,7 +15,7 @@ public class ProductWithBrandAndTypeSpecification : BaseSpecifications<Product>
 
     // Use this ctor to get all products
     // Use for sorting & Filtration
-    public ProductWithBrandAndTypeSpecification(int? brandId, int? typeId)
+    public ProductWithBrandAndTypeSpecification(int? brandId, int? typeId, ProductSortingOptions options)
         : base(product =>
             (!brandId.HasValue || brandId.Value == product.BrandId) &&
             (!typeId.HasValue || typeId.Value == product.TypeId))
@@ -23,5 +23,22 @@ public class ProductWithBrandAndTypeSpecification : BaseSpecifications<Product>
         // Add includes
         AddInclude(p => p.ProductBrand);
         AddInclude(p => p.ProductType);
+        switch (options)
+        {
+            case ProductSortingOptions.NameAsc:
+                AddOrderBy(p => p.Name);
+                break;
+            case ProductSortingOptions.NameDesc:
+                AddOrderByDescending(p => p.Name);
+                break;
+            case ProductSortingOptions.PriceAsc:
+                AddOrderBy(p => p.Price);
+                break;
+            case ProductSortingOptions.PriceDesc:
+                AddOrderByDescending(p => p.Price);
+                break;
+           default:
+               break;
+        }
     }
 }
