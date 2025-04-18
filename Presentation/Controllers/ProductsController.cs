@@ -9,10 +9,10 @@ namespace Presentation.Controllers;
 public class ProductsController(IServiceManager serviceManager) : ControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult<ProductResponse>> GetAllProducts() // Get BaseUrl/api/Products
+    public async Task<ActionResult<ProductResponse>> GetAllProducts(int? brandId,int? typeId) // Get BaseUrl/api/Products
     {
         var products =
-            await serviceManager.ProductService.GetAllProductsAsync();
+            await serviceManager.ProductService.GetAllProductsAsync(brandId, typeId);
 
         return Ok(products);
     }

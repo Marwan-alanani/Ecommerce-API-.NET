@@ -6,7 +6,7 @@ namespace Services.Specifications;
 public class ProductWithBrandAndTypeSpecification : BaseSpecifications<Product>
 {
     // Use ctor to get product by id
-    public ProductWithBrandAndTypeSpecification(int id) : base (p => p.Id == id)
+    public ProductWithBrandAndTypeSpecification(int id) : base(p => p.Id == id)
     {
         // Add includes
         AddInclude(p => p.ProductBrand);
@@ -14,7 +14,11 @@ public class ProductWithBrandAndTypeSpecification : BaseSpecifications<Product>
     }
 
     // Use this ctor to get all products
-    public ProductWithBrandAndTypeSpecification() : base(null)
+    // Use for sorting & Filtration
+    public ProductWithBrandAndTypeSpecification(int? brandId, int? typeId)
+        : base(product =>
+            (!brandId.HasValue || brandId.Value == product.BrandId) &&
+            (!typeId.HasValue || typeId.Value == product.TypeId))
     {
         // Add includes
         AddInclude(p => p.ProductBrand);
