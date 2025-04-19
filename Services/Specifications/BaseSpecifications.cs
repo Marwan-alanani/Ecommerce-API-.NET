@@ -9,6 +9,17 @@ public abstract class BaseSpecifications<T> : ISpecifications<T> where T : class
     public Expression<Func<T, object>> OrderByDescending { get; private set; }
     public Expression<Func<T, object>> OrderBy { get; private set; }
 
+    public int Skip { get; private set; }
+    public int Take { get; private set; }
+    public bool IsPaginated { get;  private set;}
+
+    protected void ApplyPagination(int pageSize, int pageIndex)
+    {
+        IsPaginated = true;
+        Take = pageSize;
+        Skip = (pageIndex -1)* pageSize;
+    }
+
     public BaseSpecifications(Expression<Func<T, bool>> criteria)
     {
         Criteria = criteria;

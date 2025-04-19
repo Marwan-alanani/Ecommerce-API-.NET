@@ -22,6 +22,7 @@ public class ProductWithBrandAndTypeSpecification : BaseSpecifications<Product>
         AddInclude(p => p.ProductBrand);
         AddInclude(p => p.ProductType);
         if (parameters.Sorting.HasValue) ApplySorting(parameters.Sorting.Value);
+        ApplyPagination(parameters.PageSize , parameters.PageIndex);
     }
 
     private static Expression<Func<Product, bool>> CreateCriteria(ProductQueryParameters parameters)
