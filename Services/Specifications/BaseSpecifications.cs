@@ -9,7 +9,7 @@ public abstract class BaseSpecifications<T> : ISpecifications<T> where T : class
     public Expression<Func<T, object>> OrderByDescending { get; private set; }
     public Expression<Func<T, object>> OrderBy { get; private set; }
 
-    public BaseSpecifications(Expression<Func<T, bool>> criteria )
+    public BaseSpecifications(Expression<Func<T, bool>> criteria)
     {
         Criteria = criteria;
     }

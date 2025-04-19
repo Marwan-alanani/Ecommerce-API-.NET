@@ -9,13 +9,11 @@ namespace Presentation.Controllers;
 public class ProductsController(IServiceManager serviceManager) : ControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult<ProductResponse>> GetAllProducts(
-        int? brandId
-        , int? typeId, ProductSortingOptions
-            sorting) // Get BaseUrl/api/Products
+    public async Task<ActionResult<ProductResponse>>
+        GetAllProducts([FromQuery] ProductQueryParameters parameters) // Get BaseUrl/api/Products
     {
         var products =
-            await serviceManager.ProductService.GetAllProductsAsync(brandId, typeId,sorting);
+            await serviceManager.ProductService.GetAllProductsAsync(parameters);
 
         return Ok(products);
     }
