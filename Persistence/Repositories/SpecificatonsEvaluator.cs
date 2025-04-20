@@ -7,10 +7,7 @@ public static class SpecificatonsEvaluator
     {
         var query = inputQuery;
         if (specifications.Criteria is not null) query = query.Where(specifications.Criteria);
-        // foreach (var include in specifications.IncludeExpressions)
-        // {
-        //    query.Include(include);
-        // }
+
         query =
             specifications.IncludeExpressions.Aggregate(query, (current, include) => current.Include(include));
 

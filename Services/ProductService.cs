@@ -16,10 +16,15 @@ public class ProductService(IUnitOfWork unitOfWork, IMapper mapper) : IProductSe
             .GetAllAsync(specifications);
 
         var data = mapper.Map<IEnumerable<ProductResponse>>(products);
+        var pageIndex = queryParameters.PageIndex;
+        var pageCount = data.Count();
+        var totalCount = await unitOfWork.GetRepository<Product, int>()
+            .CountAsync(new ProductCountSpecifications(queryParameters));
+
         return new PaginatedResponse<ProductResponse>(
             queryParameters.PageIndex,
-            queryParameters.PageSize,
-            data.Count(),
+            pageCount,
+            totalCount,
             data
         );
     }
