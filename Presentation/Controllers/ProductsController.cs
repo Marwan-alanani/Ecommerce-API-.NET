@@ -22,7 +22,6 @@ public class ProductsController(IServiceManager serviceManager) : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<ProductResponse>> GetProductBy(int id) // Get BaseUrl/api/{id:int}
     {
-        throw new Exception("Test");
         var product = await serviceManager.ProductService.GetProductAsync(id);
         return Ok(product);
     }

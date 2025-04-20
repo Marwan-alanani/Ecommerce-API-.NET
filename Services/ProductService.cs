@@ -1,5 +1,6 @@
 global using AutoMapper;
 global using Domain.Contracts;
+using Domain.Exceptions;
 using Domain.Models;
 using Services.Specifications;
 using Shared;
@@ -33,7 +34,8 @@ public class ProductService(IUnitOfWork unitOfWork, IMapper mapper) : IProductSe
     public async Task<ProductResponse> GetProductAsync(int id)
     {
         var specifications = new ProductWithBrandAndTypeSpecification(id);
-        var product = await unitOfWork.GetRepository<Product, int>().GetAsync(specifications);
+        var product = await unitOfWork.GetRepository<Product, int>().GetAsync(specifications) ??
+                      throw new ProductNotFoundException(id);
         return mapper.Map<ProductResponse>(product);
     }
 

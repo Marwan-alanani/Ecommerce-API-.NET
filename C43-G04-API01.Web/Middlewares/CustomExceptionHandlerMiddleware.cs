@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Domain.Exceptions;
 using Shared.ErrorModels;
 
 namespace C43_G04_API01.Web.Middlewares;
@@ -34,9 +35,14 @@ public class CustomExceptionHandlerMiddleware
             // Response Object
             var response = new ErrorDetails()
             {
-                StatusCode = StatusCodes.Status500InternalServerError,
                 ErrorMessage = ex.Message,
             };
+            response.StatusCode = ex switch
+            {
+                NotFoundException => StatusCodes.Status404NotFound,
+                _ => StatusCodes.Status500InternalServerError,
+            };
+            context.Response.StatusCode = response.StatusCode;
 
             // Return response as Json
             await context.Response.WriteAsJsonAsync(response);
