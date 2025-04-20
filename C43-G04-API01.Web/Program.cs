@@ -1,3 +1,4 @@
+using C43_G04_API01.Web.Factories;
 using C43_G04_API01.Web.Middlewares;
 using Domain.Contracts;
 using Microsoft.AspNetCore.Mvc;
@@ -18,39 +19,19 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
-        builder.Services.AddDbContext<StoreDbContext>(options =>
-        {
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-            options.UseSqlServer(connectionString);
-        });
         builder.Services.AddControllers();
-        builder.Services.AddScoped<IDbInitializer, DbInitializer>();
-        builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-        builder.Services.AddAutoMapper(typeof(Services.AssemblyReference).Assembly);
-        builder.Services.AddScoped<IServiceManager, ServiceManager>();
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+        // Adds all services related with Infrastructure Layer
+        builder.Services.AddInfrastructureServices(builder.Configuration);
 
-        builder.Services.Configure<ApiBehaviorOptions>(options =>
-        {
-            // Func<ActionContext,IActionResult>
-            options.InvalidModelStateResponseFactory = (context) =>
-            {
-                // Get the entries in model state that have validation errors
-                var errors = context.ModelState.Where(m =>
-                        m.Value.Errors.Any())
-                    .Select(e => new ValidationError()
-                    {
-                        Field = e.Key,
-                        Errors = e.Value.Errors.Select(error => error.ErrorMessage)
-                    });
-                var response = new ValidationErrorResponse() { ValidationErrors = errors };
-                return new BadRequestObjectResult(response);
-            };
-        });
+        // Adds all services related with Services Layer
+        builder.Services.AddApplicationServices();
+        // Adds all services related with web application layer
+        builder.Services.AddWebApplicationServices();
+
 
         var app = builder.Build();
-        app.UseMiddleware<CustomExceptionHandlerMiddleware>();
+        // app.UseMiddleware<CustomExceptionHandlerMiddleware>();
+        app.UseCustomExceptionMiddleware();
         // app.Use(async (context, next) =>
         // {
         //     Console.WriteLine("Executing request...");
@@ -59,7 +40,8 @@ public class Program
         //     Console.WriteLine(context.Response);
         // });
 
-        InitializeDbAsync(app);
+        // InitializeDbAsync(app);
+        app.InitializeDatabaseAsync();
 
 
         // Configure the HTTP request pipeline.
@@ -80,10 +62,4 @@ public class Program
         app.Run();
     }
 
-    public static async Task InitializeDbAsync(WebApplication app)
-    {
-        using var scope = app.Services.CreateScope();
-        var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
-        await dbInitializer.InitializeAsync();
-    }
 }
