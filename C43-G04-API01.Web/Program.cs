@@ -1,11 +1,13 @@
 using C43_G04_API01.Web.Middlewares;
 using Domain.Contracts;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using Persistence.Data;
 using Persistence.Repositories;
 using Services;
 using ServicesAbstraction;
+using Shared.ErrorModels;
 
 namespace C43_G04_API01.Web;
 
@@ -28,6 +30,24 @@ public class Program
         builder.Services.AddScoped<IServiceManager, ServiceManager>();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+
+        builder.Services.Configure<ApiBehaviorOptions>(options =>
+        {
+            // Func<ActionContext,IActionResult>
+            options.InvalidModelStateResponseFactory = (context) =>
+            {
+                // Get the entries in model state that have validation errors
+                var errors = context.ModelState.Where(m =>
+                        m.Value.Errors.Any())
+                    .Select(e => new ValidationError()
+                    {
+                        Field = e.Key,
+                        Errors = e.Value.Errors.Select(error => error.ErrorMessage)
+                    });
+                var response = new ValidationErrorResponse() { ValidationErrors = errors };
+                return new BadRequestObjectResult(response);
+            };
+        });
 
         var app = builder.Build();
         app.UseMiddleware<CustomExceptionHandlerMiddleware>();
