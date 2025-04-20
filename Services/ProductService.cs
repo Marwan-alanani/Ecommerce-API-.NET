@@ -2,17 +2,26 @@ global using AutoMapper;
 global using Domain.Contracts;
 using Domain.Models;
 using Services.Specifications;
+using Shared;
 
 namespace Services;
 
 public class ProductService(IUnitOfWork unitOfWork, IMapper mapper) : IProductService
 {
-    public async Task<IEnumerable<ProductResponse>> GetAllProductsAsync(ProductQueryParameters queryParameters)
+    public async Task<PaginatedResponse<ProductResponse>> GetAllProductsAsync(ProductQueryParameters queryParameters)
     {
-        var specifications = new ProductWithBrandAndTypeSpecification(queryParameters); // Object that holds query parameters
+        var specifications =
+            new ProductWithBrandAndTypeSpecification(queryParameters); // Object that holds query parameters
         var products = await unitOfWork.GetRepository<Product, int>()
             .GetAllAsync(specifications);
-        return mapper.Map<IEnumerable<ProductResponse>>(products);
+
+        var data = mapper.Map<IEnumerable<ProductResponse>>(products);
+        return new PaginatedResponse<ProductResponse>(
+            queryParameters.PageIndex,
+            queryParameters.PageSize,
+            data.Count(),
+            data
+        );
     }
 
 

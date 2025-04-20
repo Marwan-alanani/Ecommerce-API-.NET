@@ -1,5 +1,6 @@
 global using ServicesAbstraction;
 using Microsoft.AspNetCore.Mvc;
+using Shared;
 using Shared.DataTransferObjects.Products;
 
 namespace Presentation.Controllers;
@@ -9,7 +10,7 @@ namespace Presentation.Controllers;
 public class ProductsController(IServiceManager serviceManager) : ControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult<ProductResponse>>
+    public async Task<ActionResult<PaginatedResponse<ProductResponse>>>
         GetAllProducts([FromQuery] ProductQueryParameters parameters) // Get BaseUrl/api/Products
     {
         var products =
