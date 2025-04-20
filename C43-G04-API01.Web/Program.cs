@@ -1,3 +1,4 @@
+using C43_G04_API01.Web.Middlewares;
 using Domain.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -29,6 +30,14 @@ public class Program
         builder.Services.AddSwaggerGen();
 
         var app = builder.Build();
+        app.UseMiddleware<CustomExceptionHandlerMiddleware>();
+        // app.Use(async (context, next) =>
+        // {
+        //     Console.WriteLine("Executing request...");
+        //     await next.Invoke();
+        //     Console.WriteLine("Request completed.");
+        //     Console.WriteLine(context.Response);
+        // });
 
         InitializeDbAsync(app);
 
