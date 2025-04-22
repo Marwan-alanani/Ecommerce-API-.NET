@@ -1,4 +1,4 @@
-namespace Domain.Models;
+namespace Domain.Models.Products;
 
 public class Product : BaseEntity<int>
 {

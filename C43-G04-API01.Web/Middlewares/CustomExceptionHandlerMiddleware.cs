@@ -22,7 +22,7 @@ public class CustomExceptionHandlerMiddleware
         {
             await _next.Invoke(context);
             // Logic
-            await HandleNotFoundEndpointAsync(context);
+            await HandleNotFoundPathAsync(context);
         }
         catch (Exception ex)
         {
@@ -56,14 +56,14 @@ public class CustomExceptionHandlerMiddleware
         await context.Response.WriteAsJsonAsync(response);
     }
 
-    private static async Task HandleNotFoundEndpointAsync(HttpContext context)
+    private static async Task HandleNotFoundPathAsync(HttpContext context)
     {
         if (context.Response.StatusCode == StatusCodes.Status404NotFound)
         {
             context.Response.ContentType = "application/json";
             var response = new ErrorDetails()
             {
-                ErrorMessage = $"End Point {context.Request.Path} not found",
+                ErrorMessage = $"Path {context.Request.Path} not found",
                 StatusCode = StatusCodes.Status404NotFound
             };
             await context.Response.WriteAsJsonAsync(response);

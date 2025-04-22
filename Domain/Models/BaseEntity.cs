@@ -1,6 +1,7 @@
 namespace Domain.Models;
 
-public class BaseEntity<TKey>
+// Parent for all Domain models
+public abstract class BaseEntity<TKey>
 {
     public TKey Id { get; set; } // PK
 }
