@@ -1,2 +1,10 @@
 global using ServicesAbstraction;
+global using Domain.Models.Basket;
+global using Shared.DataTransferObjects.Basket;
+global using AutoMapper;
+global using Domain.Contracts;
+global using Domain.Models.Products;
+global using Services.Specifications;
+global using Shared;
+global using Domain.Exceptions;
 global using Shared.DataTransferObjects.Products;

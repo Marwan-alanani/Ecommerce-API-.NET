@@ -1,10 +1,3 @@
-global using AutoMapper;
-global using Domain.Contracts;
-using Domain.Exceptions;
-using Domain.Models;
-using Domain.Models.Products;
-using Services.Specifications;
-using Shared;
 
 namespace Services;
 
