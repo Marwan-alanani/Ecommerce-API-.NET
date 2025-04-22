@@ -5,9 +5,7 @@ using Shared.DataTransferObjects.Products;
 
 namespace Presentation.Controllers;
 
-[Route("api/[controller]")]
-[ApiController]
-public class ProductsController(IServiceManager serviceManager) : ControllerBase
+public class ProductsController(IServiceManager serviceManager) : APIController
 {
     [HttpGet]
     public async Task<ActionResult<PaginatedResponse<ProductResponse>>>
