@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Persistence.Identity;
 using Persistence.Repositories;
 using StackExchange.Redis;
 
@@ -15,6 +16,13 @@ public static class InfrastructureServicesRegistration
             var connectionString = configuration.GetConnectionString("DefaultConnection");
             options.UseSqlServer(connectionString);
         });
+
+        services.AddDbContext<StoreIdentityDbContext>(options =>
+        {
+            var connectionString = configuration.GetConnectionString("IdentityConnection");
+            options.UseSqlServer(connectionString);
+        });
+
         services.AddScoped<IDbInitializer, DbInitializer>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IBasketRespository, BasketRepository>();
