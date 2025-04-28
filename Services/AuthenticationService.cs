@@ -1,12 +1,9 @@
-global using Microsoft.EntityFrameworkCore;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using Microsoft.IdentityModel.Tokens;
-
 namespace Services;
 
-internal class AuthenticationService(UserManager<ApplicationUser> userManager, IMapper mapper)
+internal class AuthenticationService(
+    UserManager<ApplicationUser> userManager,
+    IMapper mapper,
+    IOptions<JWTOptions> options)
     : IAuthenticationService
 {
     public async Task<bool> CheckEmailAsync(string email)
@@ -24,7 +21,7 @@ internal class AuthenticationService(UserManager<ApplicationUser> userManager, I
         throw new AddressNotFoundException(user.UserName!);
     }
 
-    public async Task<UserResponse> GetUserByEmailAsync(string email)
+    public async Task<UserResponse> GetUserByEmail(string email)
     {
         var user = await userManager.FindByEmailAsync(email)
                    ?? throw new UserNotFoundException(email);
@@ -87,6 +84,7 @@ internal class AuthenticationService(UserManager<ApplicationUser> userManager, I
 
     private async Task<string> CreateTokenAsync(ApplicationUser user)
     {
+        var jwt = options.Value;
         var claims = new List<Claim>()
         {
             new(ClaimTypes.Email, user.Email!),
@@ -96,15 +94,14 @@ internal class AuthenticationService(UserManager<ApplicationUser> userManager, I
         var roles = await userManager.GetRolesAsync(user);
         foreach (var role in roles) claims.Add(new Claim(ClaimTypes.Role, role));
 
-        string secretKey = "jYBGV2wepcUHAilIRhut7AyLOicr3AZisv9mDCg6Jms=";
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)); // for encryption
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.SecretKey)); // for encryption
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
-            issuer: "Myissuer",
-            audience: "MyAudience",
+            issuer: jwt.Issuer,
+            audience: jwt.Audience,
             claims: claims,
-            expires: DateTime.UtcNow.AddDays(7),
+            expires: DateTime.UtcNow.AddDays(jwt.DurationInDays),
             signingCredentials: creds);
 
         var tokenHandler = new JwtSecurityTokenHandler();

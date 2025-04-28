@@ -1,3 +1,5 @@
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Shared.Authentication;
 
 namespace Presentation.Controllers;
@@ -23,19 +25,41 @@ public class AuthenticationController(IServiceManager serviceManager)
 
     // [HttpGet]
     // CheckEmail(string email) => bool (registered email address or not)
+    [HttpGet("CheckEmail")]
+     public async Task<ActionResult<bool>> CheckEmail(string email)
+     => Ok(await serviceManager.AuthenticationService.CheckEmailAsync(email));
 
     // TODO
 
     // [HttpGet]
     // [Authorize]
     // GetCurrentUserAddress() => AddressDTO
+    [Authorize]
+    [HttpGet("Address")]
+    public async Task<ActionResult<AddressDTO>> GetAddress()
+    {
+        var email = User.FindFirstValue(ClaimTypes.Email);
+        return await serviceManager.AuthenticationService.GetUserAddressAsync(email!);
+    }
+
 
     // [HttpPut]
     // [Authorize]
     // UpdateCurrentUserAddress(AddressDTO) => AddressDTO
+    [Authorize]
+    [HttpPut("Address")]
+    public async Task<ActionResult<AddressDTO>> UpdateAddress(AddressDTO addressDto)
+    {
+        var email = User.FindFirstValue(ClaimTypes.Email);
+        return await serviceManager.AuthenticationService.UpdateUserAddressAsync(addressDto, email!);
+    }
 
     // [HttpGet]
     // [Authorize]
     // GetCurrentUser()
     // => User Response {string Token , string Email , string DisplayName}
+    [Authorize]
+    [HttpGet]
+    public async Task<ActionResult<UserResponse>> GetCurrentUser(string email)
+        => Ok(await serviceManager.AuthenticationService.GetUserByEmail(email));
 }

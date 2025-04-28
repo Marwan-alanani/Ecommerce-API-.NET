@@ -7,17 +7,17 @@ public class ServiceManager(
     IUnitOfWork unitOfWork,
     IMapper mapper,
     IBasketRespository basketRespository,
-    UserManager<ApplicationUser> userManager
-) : IServiceManager
+    UserManager<ApplicationUser> userManager,
+    IOptions<JWTOptions> options) : IServiceManager
 {
     private readonly Lazy<IProductService> _lazyProductService =
-        new (() => new ProductService(unitOfWork, mapper));
+        new(() => new ProductService(unitOfWork, mapper));
 
     private readonly Lazy<IBasketService> _lazyBasketService =
-        new ( () => new BasketService(basketRespository, mapper));
+        new(() => new BasketService(basketRespository, mapper));
 
     private readonly Lazy<IAuthenticationService> _lazyAuthenticationService =
-        new ( () => new AuthenticationService(userManager , mapper));
+        new(() => new AuthenticationService(userManager, mapper , options));
 
     public IProductService ProductService => _lazyProductService.Value;
     public IBasketService BasketService => _lazyBasketService.Value;

@@ -14,7 +14,7 @@ public interface IAuthenticationService
 
     Task<AddressDTO> UpdateUserAddressAsync(AddressDTO addressDto ,string email);
 
-    Task<UserResponse> GetUserByEmailAsync(string email);
+    Task<UserResponse> GetUserByEmail(string email);
 
 
 }

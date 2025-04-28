@@ -1,6 +1,10 @@
+using System.Net;
 using C43_G04_API01.Web.Factories;
 using C43_G04_API01.Web.Middlewares;
 using Domain.Contracts;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -24,10 +28,9 @@ public class Program
         builder.Services.AddInfrastructureServices(builder.Configuration);
 
         // Adds all services related with Services Layer
-        builder.Services.AddApplicationServices();
+        builder.Services.AddApplicationServices(builder.Configuration);
         // Adds all services related with web application layer
-        builder.Services.AddWebApplicationServices();
-
+        builder.Services.AddWebApplicationServices(builder.Configuration);
 
         var app = builder.Build();
         // app.UseMiddleware<CustomExceptionHandlerMiddleware>();
@@ -54,7 +57,8 @@ public class Program
         app.UseHttpsRedirection();
 
         app.UseStaticFiles();
-        // app.UseAuthorization();
+        app.UseAuthentication();
+        app.UseAuthorization();
 
 
         app.MapControllers();
