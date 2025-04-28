@@ -8,3 +8,6 @@ global using Services.Specifications;
 global using Shared;
 global using Domain.Exceptions;
 global using Shared.DataTransferObjects.Products;
+global using Domain.Models.Identity;
+global using Microsoft.AspNetCore.Identity;
+global using Shared.Authentication;
