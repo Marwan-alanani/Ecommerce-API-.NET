@@ -1,3 +1,4 @@
+global using Microsoft.EntityFrameworkCore;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -5,9 +6,54 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Services;
 
-internal class AuthenticationService(UserManager<ApplicationUser> userManager)
+internal class AuthenticationService(UserManager<ApplicationUser> userManager, IMapper mapper)
     : IAuthenticationService
 {
+    public async Task<bool> CheckEmailAsync(string email)
+        => (await userManager.FindByEmailAsync(email)) != null;
+
+    public async Task<AddressDTO> GetUserAddressAsync(string email)
+    {
+        var user = await userManager.Users
+                       .Include(u => u.Address)
+                       .FirstOrDefaultAsync(u => u.Email == email)
+                   ?? throw new UserNotFoundException(email);
+        ;
+        if (user.Address is not null)
+            return mapper.Map<AddressDTO>(user.Address);
+        throw new AddressNotFoundException(user.UserName!);
+    }
+
+    public async Task<UserResponse> GetUserByEmailAsync(string email)
+    {
+        var user = await userManager.FindByEmailAsync(email)
+                   ?? throw new UserNotFoundException(email);
+        return new(email, user.DisplayName, await CreateTokenAsync(user));
+    }
+
+    public async Task<AddressDTO> UpdateUserAddressAsync(AddressDTO addressDto, string email)
+    {
+        var user = await userManager.Users
+                       .Include(u => u.Address)
+                       .FirstOrDefaultAsync(u => u.Email == email)
+                   ?? throw new UserNotFoundException(email);
+
+        Address newAddress = new()
+        {
+            FirstName = addressDto.FirstName,
+            LastName = addressDto.LastName,
+            Street = addressDto.Street,
+            City = addressDto.City,
+            Country = addressDto.Country,
+            UserId = user.Id,
+            User = user
+        };
+        user.Address = newAddress;
+
+        await userManager.UpdateAsync(user);
+        return mapper.Map<AddressDTO>(newAddress);
+    }
+
     public async Task<UserResponse> LoginAsync(LoginRequest request)
     {
         // check if there is a user with the email address

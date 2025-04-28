@@ -17,7 +17,7 @@ public class ServiceManager(
         new ( () => new BasketService(basketRespository, mapper));
 
     private readonly Lazy<IAuthenticationService> _lazyAuthenticationService =
-        new ( () => new AuthenticationService(userManager));
+        new ( () => new AuthenticationService(userManager , mapper));
 
     public IProductService ProductService => _lazyProductService.Value;
     public IBasketService BasketService => _lazyBasketService.Value;
