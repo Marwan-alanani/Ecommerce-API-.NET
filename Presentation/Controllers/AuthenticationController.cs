@@ -13,16 +13,13 @@ public class AuthenticationController(IServiceManager serviceManager)
         => Ok(await serviceManager.AuthenticationService.LoginAsync(request));
 
 
-
-
-
     // [HttpPost]
     // Register(RegisterRequest {string Email , string username , string password , string DisplayName})
     // => User Response {string Token , string Email , string DisplayName}
 
     [HttpPost("register")]
     public async Task<ActionResult<UserResponse>> Register(RegisterRequest request)
-        => Ok( await serviceManager.AuthenticationService.RegisterAsync(request));
+        => Ok(await serviceManager.AuthenticationService.RegisterAsync(request));
 
     // [HttpGet]
     // CheckEmail(string email) => bool (registered email address or not)
@@ -41,5 +38,4 @@ public class AuthenticationController(IServiceManager serviceManager)
     // [Authorize]
     // GetCurrentUser()
     // => User Response {string Token , string Email , string DisplayName}
-
 }
