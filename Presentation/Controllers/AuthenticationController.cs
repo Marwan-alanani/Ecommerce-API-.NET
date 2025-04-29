@@ -26,8 +26,8 @@ public class AuthenticationController(IServiceManager serviceManager)
     // [HttpGet]
     // CheckEmail(string email) => bool (registered email address or not)
     [HttpGet("CheckEmail")]
-     public async Task<ActionResult<bool>> CheckEmail(string email)
-     => Ok(await serviceManager.AuthenticationService.CheckEmailAsync(email));
+    public async Task<ActionResult<bool>> CheckEmail(string email)
+        => Ok(await serviceManager.AuthenticationService.CheckEmailAsync(email));
 
     // TODO
 
@@ -58,8 +58,13 @@ public class AuthenticationController(IServiceManager serviceManager)
     // [Authorize]
     // GetCurrentUser()
     // => User Response {string Token , string Email , string DisplayName}
+
+
     [Authorize]
     [HttpGet]
-    public async Task<ActionResult<UserResponse>> GetCurrentUser(string email)
-        => Ok(await serviceManager.AuthenticationService.GetUserByEmail(email));
+    public async Task<ActionResult<UserResponse>> GetCurrentUser()
+    {
+        var email = User.FindFirstValue(ClaimTypes.Email);
+        return Ok(await serviceManager.AuthenticationService.GetUserByEmail(email!));
+    }
 }

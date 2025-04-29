@@ -1,6 +1,6 @@
-namespace Shared.Authentication;
+namespace Domain.Models.OrderModels;
 
-public class AddressDTO()
+public class OrderAddress
 {
     public string City { get; set; } = default!;
     public string Street { get; set; } = default!;

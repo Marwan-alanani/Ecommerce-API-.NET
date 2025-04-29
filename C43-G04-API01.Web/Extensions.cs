@@ -25,7 +25,7 @@ public static class Extensions
             options.InvalidModelStateResponseFactory = ApiResponseFactory.GenerateApiValidationResponse;
         });
         services.AddSwaggerServices();
-        ConfigureJWT(services, configuration);
+        ConfigureJwt(services, configuration);
         return services;
     }
 
@@ -38,7 +38,7 @@ public static class Extensions
         return app;
     }
 
-    private static void ConfigureJWT(IServiceCollection services, IConfiguration configuration)
+    private static void ConfigureJwt(IServiceCollection services, IConfiguration configuration)
     {
         var jwt = configuration.GetSection("JWTOptions").Get<JWTOptions>();
         services.AddAuthentication(config =>
