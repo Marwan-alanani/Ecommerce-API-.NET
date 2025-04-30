@@ -24,7 +24,7 @@ public class OrderService(
             item.Price = product.Price;
         }
 
-        var address = mapper.Map<OrderAddress>(request);
+        var address = mapper.Map<OrderAddress>(request.Address);
         var method = await _unitOfWork.GetRepository<DeliveryMethod>().GetAsync(request.DeliveryMethodId) ??
                      throw new DeliveryMethodNotFoundException(request.DeliveryMethodId);
 

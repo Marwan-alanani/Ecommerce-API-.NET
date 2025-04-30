@@ -6,7 +6,7 @@ public class OrderResponse
 {
 
     // Id
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } // Order id
     public string UserEmail { get; set; } = default!;
     public DateTimeOffset Date { get; set; } = DateTimeOffset.Now;
     public IEnumerable<OrderItemDTO> Items { get; set; } = [];

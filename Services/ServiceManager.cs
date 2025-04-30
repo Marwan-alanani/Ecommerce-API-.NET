@@ -1,6 +1,3 @@
-using Domain.Models.Identity;
-using Microsoft.AspNetCore.Identity;
-
 namespace Services;
 
 public class ServiceManager(
@@ -17,10 +14,14 @@ public class ServiceManager(
         new(() => new BasketService(basketRespository, mapper));
 
     private readonly Lazy<IAuthenticationService> _lazyAuthenticationService =
-        new(() => new AuthenticationService(userManager, mapper , options));
+        new(() => new AuthenticationService(userManager, mapper, options));
+
+    private readonly Lazy<IOrderService> _lazyOrderService =
+        new(() => new OrderService(mapper, unitOfWork, basketRespository));
 
     public IProductService ProductService => _lazyProductService.Value;
     public IBasketService BasketService => _lazyBasketService.Value;
 
     public IAuthenticationService AuthenticationService => _lazyAuthenticationService.Value;
+    public IOrderService OrderService => _lazyOrderService.Value;
 }
