@@ -25,6 +25,22 @@ public class DbInitializer(
             //     await context.Database.MigrateAsync();
             // }
 
+            if (!context.Set<DeliveryMethod>().Any())
+            {
+                // Read From File
+                var data = await File.ReadAllTextAsync("../Persistence/Data/Seeding/delivery.json");
+
+                // Convert to C# code or deserialize
+                var objects = JsonSerializer.Deserialize<List<DeliveryMethod>>(data);
+
+                if (objects is not null && objects.Any())
+                {
+                    context.Set<DeliveryMethod>().AddRange(objects);
+                    await context.SaveChangesAsync();
+                }
+
+                // Save to Db
+            }
             if (!context.Set<ProductBrand>().Any())
             {
                 // Read From File

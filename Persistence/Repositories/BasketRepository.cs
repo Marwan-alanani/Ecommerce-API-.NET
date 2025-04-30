@@ -1,4 +1,3 @@
-using StackExchange.Redis;
 
 namespace Persistence.Repositories;
 

@@ -4,12 +4,10 @@ public class Order : BaseEntity<Guid>
 {
     public Order()
     {
-
     }
 
-    public Order(string userEmail, OrderAddress address
-        , DeliveryMethod deliveryMethod, decimal subtotal
-        , IEnumerable<OrderItem> items)
+    public Order(string userEmail, IEnumerable<OrderItem> items, OrderAddress address
+        , DeliveryMethod deliveryMethod, decimal subtotal)
     {
         UserEmail = userEmail;
         Address = address;
@@ -25,7 +23,7 @@ public class Order : BaseEntity<Guid>
     public OrderAddress Address { get; set; } = default!;
     public DeliveryMethod DeliveryMethod { get; set; }
     public int DeliveryMethodId { get; set; }
-    public PaymentStatus PaymentStatus { get; set; } =  PaymentStatus.Pending;
+    public PaymentStatus PaymentStatus { get; set; } = PaymentStatus.Pending;
     public string PaymentIntentId { get; set; } = string.Empty;
     public decimal Subtotal { get; set; }
 }

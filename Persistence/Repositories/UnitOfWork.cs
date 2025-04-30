@@ -16,4 +16,7 @@ public class UnitOfWork(StoreDbContext context)
         _repositories.Add(typeName, repository);
         return repository;
     }
+
+    public IGenericRepository<TEntity, int> GetRepository<TEntity>() where TEntity : BaseEntity<int>
+        => GetRepository<TEntity, int>();
 }

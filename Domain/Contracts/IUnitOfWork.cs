@@ -11,4 +11,6 @@ public interface IUnitOfWork
     // IGenericRepository<ProductBrand ,int > ProductBrands { get; }
     IGenericRepository<TEntity, TKey> GetRepository<TEntity, TKey>()
         where TEntity : BaseEntity<TKey>;
+    IGenericRepository<TEntity, int> GetRepository<TEntity>()
+        where TEntity : BaseEntity<int>;
 }

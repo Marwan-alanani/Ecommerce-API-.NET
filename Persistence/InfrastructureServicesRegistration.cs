@@ -1,11 +1,3 @@
-using Domain.Models.Identity;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Persistence.Identity;
-using Persistence.Repositories;
-using StackExchange.Redis;
-
 namespace Persistence;
 
 public static class InfrastructureServicesRegistration
