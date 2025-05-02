@@ -19,7 +19,7 @@ public class Order : BaseEntity<Guid>
     // Id
     public string UserEmail { get; set; } = default!;
     public DateTimeOffset Date { get; set; } = DateTimeOffset.Now;
-    public IEnumerable<OrderItem> Items { get; set; } = [];
+    public IEnumerable<OrderItem> Items { get; set; } = new List<OrderItem>();
     public OrderAddress Address { get; set; } = default!;
     public DeliveryMethod DeliveryMethod { get; set; }
     public int DeliveryMethodId { get; set; }

@@ -45,16 +45,23 @@ public class OrderService(
 
     public async Task<OrderResponse> GetAsync(Guid Id)
     {
-        throw new NotImplementedException();
+        var orders = await _unitOfWork.GetRepository<Order, Guid>()
+            .GetAsync( new OrderSpecifications(Id));
+        return mapper.Map<OrderResponse>(orders);
     }
 
     public async Task<IEnumerable<OrderResponse>> GetAllAsync(string email)
     {
-        throw new NotImplementedException();
+        var orders = await _unitOfWork.GetRepository<Order, Guid>()
+            .GetAllAsync( new OrderSpecifications(email));
+
+        return mapper.Map<IEnumerable<OrderResponse>>(orders);
+
     }
 
     public async Task<IEnumerable<DeliveryMethodResponse>> GetDeliveryMethodsAsync()
     {
-        throw new NotImplementedException();
-    }
+        var deliveryMethods  = await _unitOfWork.GetRepository<DeliveryMethod>().GetAllAsync();
+        return mapper.Map<IEnumerable<DeliveryMethodResponse>>(deliveryMethods);
+ }
 }
