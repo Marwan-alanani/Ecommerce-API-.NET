@@ -1,5 +1,6 @@
 global using ServicesAbstraction;
 using Microsoft.AspNetCore.Mvc;
+using Persistence.Presentation.Attirbutes;
 using Shared;
 using Shared.DataTransferObjects.Products;
 
@@ -7,6 +8,7 @@ namespace Presentation.Controllers;
 
 public class ProductsController(IServiceManager serviceManager) : APIController
 {
+    [RedisCache]
     [HttpGet]
     public async Task<ActionResult<PaginatedResponse<ProductResponse>>>
         GetAllProducts([FromQuery] ProductQueryParameters parameters) // Get BaseUrl/api/Products

@@ -129,6 +129,7 @@ public class DbInitializer(
                 Email = "Admin@gmail.com",
                 PhoneNumber = "0123456789"
             };
+
             await userManager.CreateAsync(superAdminUser, "Passw0rd");
             await userManager.CreateAsync(adminUser, "Passw0rd");
 

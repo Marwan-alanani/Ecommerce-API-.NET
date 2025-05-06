@@ -1,18 +1,7 @@
-using System.Net;
-using C43_G04_API01.Web.Factories;
 using C43_G04_API01.Web.Middlewares;
-using Domain.Contracts;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Persistence;
-using Persistence.Data;
-using Persistence.Repositories;
 using Services;
-using ServicesAbstraction;
-using Shared.ErrorModels;
+using Swashbuckle.AspNetCore.SwaggerUI;
 
 namespace C43_G04_API01.Web;
 
@@ -51,7 +40,13 @@ public class Program
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
-            app.UseSwaggerUI();
+            app.UseSwaggerUI(options =>
+            {
+                options.DocumentTitle = "My E-Commerce API";
+                options.DocExpansion(DocExpansion.None);
+                options.EnableFilter();
+                options.DisplayRequestDuration();
+            });
         }
 
         app.UseHttpsRedirection();
@@ -65,5 +60,4 @@ public class Program
 
         app.Run();
     }
-
 }

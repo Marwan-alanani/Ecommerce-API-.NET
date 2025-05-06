@@ -1,3 +1,6 @@
+using Services;
+using ServicesAbstraction;
+
 namespace Persistence;
 
 public static class InfrastructureServicesRegistration
@@ -5,6 +8,9 @@ public static class InfrastructureServicesRegistration
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services
         , IConfiguration configuration)
     {
+
+        services.AddScoped< ICacheRepository , CacheRepository>();
+        services.AddScoped<ICacheService, CacheService>();
         services.AddDbContext<StoreDbContext>(options =>
         {
             var connectionString = configuration.GetConnectionString("DefaultConnection");
