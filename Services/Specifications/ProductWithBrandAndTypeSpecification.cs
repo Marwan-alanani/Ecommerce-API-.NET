@@ -22,7 +22,7 @@ public class ProductWithBrandAndTypeSpecification : BaseSpecifications<Product>
         // Add includes
         AddInclude(p => p.ProductBrand);
         AddInclude(p => p.ProductType);
-        if (parameters.Sorting.HasValue) ApplySorting(parameters.Sorting.Value);
+        if (parameters.Sort.HasValue) ApplySorting(parameters.Sort.Value);
         ApplyPagination(parameters.PageSize , parameters.PageIndex);
     }
 

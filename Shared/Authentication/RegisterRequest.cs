@@ -6,5 +6,5 @@ public record RegisterRequest(
     string Email,
     string Password,
     string DisplayName,
-    string Username,
-    string PhoneNumber);
+    string? Username = "ElMaroo",
+    string? PhoneNumber  = "");

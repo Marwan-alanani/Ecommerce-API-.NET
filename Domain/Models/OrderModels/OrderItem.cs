@@ -8,6 +8,7 @@ public class OrderItem : BaseEntity<Guid>
 
     public OrderItem(ProductInOrderItem product, decimal price, int quantity)
     {
+
         Product = product;
         Price = price;
         Quantity = quantity;

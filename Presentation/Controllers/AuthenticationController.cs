@@ -25,7 +25,7 @@ public class AuthenticationController(IServiceManager serviceManager)
 
     // [HttpGet]
     // CheckEmail(string email) => bool (registered email address or not)
-    [HttpGet("CheckEmail")]
+    [HttpGet("emailexists")]
     public async Task<ActionResult<bool>> CheckEmail(string email)
         => Ok(await serviceManager.AuthenticationService.CheckEmailAsync(email));
 

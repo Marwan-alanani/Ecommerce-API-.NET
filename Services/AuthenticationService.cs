@@ -16,9 +16,9 @@ internal class AuthenticationService(
                        .FirstOrDefaultAsync(u => u.Email == email)
                    ?? throw new UserNotFoundException(email);
         ;
-        if (user.Address is not null)
-            return mapper.Map<AddressDTO>(user.Address);
-        throw new AddressNotFoundException(user.UserName!);
+        // if (user.Address is not null)
+        return mapper.Map<AddressDTO>(user.Address);
+        // throw new AddressNotFoundException(user.UserName!);
     }
 
     public async Task<UserResponse> GetUserByEmail(string email)

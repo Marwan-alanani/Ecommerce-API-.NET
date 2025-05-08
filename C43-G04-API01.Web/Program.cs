@@ -11,6 +11,16 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("AllowAll", builder
+                =>
+            {
+                builder.AllowAnyOrigin();
+                builder.AllowAnyMethod();
+                builder.AllowAnyHeader();
+            });
+        });
         // Add services to the container.
         builder.Services.AddControllers();
         // Adds all services related with Infrastructure Layer
@@ -34,6 +44,7 @@ public class Program
 
         // InitializeDbAsync(app);
         app.InitializeDatabaseAsync();
+        app.UseCors("AllowAll");
 
 
         // Configure the HTTP request pipeline.

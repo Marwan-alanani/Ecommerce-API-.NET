@@ -7,7 +7,7 @@ public class ProductQueryParameters
     private int _pageSize = DefaultPageSize;
     public int? BrandId { get; set; }
     public int? TypeId { get; set; }
-    public ProductSortingOptions? Sorting { get; set; }
+    public ProductSortingOptions? Sort { get; set; }
     public string? Search { get; set; }
     public int PageSize { get => _pageSize;
         set => _pageSize = (value > 0 &&  value <= MaxPageSize) ? value : DefaultPageSize; }

@@ -6,7 +6,7 @@ public class DeliveryMethodConfigurations
     public void Configure(EntityTypeBuilder<DeliveryMethod> builder)
     {
         builder.ToTable("DeliveryMethods");
-        builder.Property(d => d.Price)
+        builder.Property(d => d.Cost)
             .HasColumnType("decimal(18,2)");
     }
 }

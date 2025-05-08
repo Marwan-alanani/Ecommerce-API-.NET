@@ -9,14 +9,14 @@ internal class OrderSpecifications
     {
        AddInclude(x => x.DeliveryMethod);
        AddInclude(x => x.Items);
-       AddOrderByDescending(x => x.Date);
+       AddOrderByDescending(x => x.OrderDate);
     }
 
-    public OrderSpecifications(string email) : base(order => order.UserEmail  == email)
+    public OrderSpecifications(string email) : base(order => order.BuyerEmail  == email)
     {
         AddInclude(x => x.DeliveryMethod);
         AddInclude(x => x.Items);
-        AddOrderByDescending(x => x.Date);
+        AddOrderByDescending(x => x.OrderDate);
 
     }
 }

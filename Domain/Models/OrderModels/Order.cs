@@ -6,24 +6,26 @@ public class Order : BaseEntity<Guid>
     {
     }
 
-    public Order(string userEmail, IEnumerable<OrderItem> items, OrderAddress address
-        , DeliveryMethod deliveryMethod, decimal subtotal)
+    public Order(string buyerEmail, IEnumerable<OrderItem> items, OrderAddress shipToAddress
+        , DeliveryMethod deliveryMethod, decimal subtotal
+        , string paymentIntentId)
     {
-        UserEmail = userEmail;
-        Address = address;
+        BuyerEmail = buyerEmail;
+        ShipToAddress = shipToAddress;
         DeliveryMethod = deliveryMethod;
         Subtotal = subtotal;
         Items = items;
+        PaymentIntentId = paymentIntentId;
     }
 
     // Id
-    public string UserEmail { get; set; } = default!;
-    public DateTimeOffset Date { get; set; } = DateTimeOffset.Now;
+    public string BuyerEmail { get; set; } = default!;
+    public DateTimeOffset OrderDate { get; set; } = DateTimeOffset.Now;
     public IEnumerable<OrderItem> Items { get; set; } = new List<OrderItem>();
-    public OrderAddress Address { get; set; } = default!;
+    public OrderAddress ShipToAddress { get; set; } = default!;
     public DeliveryMethod DeliveryMethod { get; set; }
     public int DeliveryMethodId { get; set; }
-    public PaymentStatus PaymentStatus { get; set; } = PaymentStatus.Pending;
-    public string PaymentIntentId { get; set; } = string.Empty;
+    public PaymentStatus Status { get; set; } = PaymentStatus.Pending;
+    public string PaymentIntentId { get; set; } = default!;
     public decimal Subtotal { get; set; }
 }

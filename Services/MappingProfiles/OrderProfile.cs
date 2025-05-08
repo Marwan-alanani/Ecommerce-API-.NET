@@ -11,13 +11,21 @@ public class OrderProfile : Profile
                     => o.MapFrom(p => p.Product.ProductName))
             .ForMember(d => d.PictureUrl,
                 o
-                    => o.MapFrom<OrderItemPictureUrlResolver>());
+                    => o.MapFrom<OrderItemPictureUrlResolver>())
+            .ForMember(d => d.ProductId , options =>
+            {
+                options.MapFrom(s => s.Product.ProductId);
+            });
 
         CreateMap<Order, OrderResponse>()
             .ForMember(d => d.DeliveryMethod, o
                 => o.MapFrom(s => s.DeliveryMethod.ShortName))
             .ForMember(d => d.Total, o
-                => o.MapFrom(s => s.DeliveryMethod.Price + s.Subtotal));
+                => o.MapFrom(s => s.DeliveryMethod.Cost + s.Subtotal))
+            .ForMember(s => s.DeliveryCost , o =>
+            {
+                o.MapFrom(s => s.DeliveryMethod.Cost);
+            });
 
         CreateMap<DeliveryMethod, DeliveryMethodResponse>();
     }
