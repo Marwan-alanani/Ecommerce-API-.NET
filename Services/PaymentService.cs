@@ -66,4 +66,42 @@ public class PaymentService(
         // configuration
         // mapper
     }
+
+    public async Task UpdateOrderPaymentStatusAsync(string jsonRequest, string stripeHeader)
+    {
+        var endPointSecret = configuration.GetRequiredSection("Stripe")["EndPointSecret"];
+        var stripeEvent = EventUtility.ConstructEvent(jsonRequest, stripeHeader, endPointSecret);
+
+        var paymentIntent = stripeEvent.Data.Object as PaymentIntent;
+        switch (stripeEvent.Type)
+        {
+            case EventTypes.PaymentIntentPaymentFailed:
+                await UpdatePaymentFaileddAsync(paymentIntent.Id);
+                break;
+            case EventTypes.PaymentIntentSucceeded:
+                await UpdatePaymentReceivedAsync(paymentIntent.Id);
+                break;
+            default:
+                Console.WriteLine("Unhandled event type: {0}", stripeEvent.Type);
+                break;
+        }
+    }
+
+    public async Task UpdatePaymentReceivedAsync(string paymentIntentId)
+    {
+        var order = await unitOfWork.GetRepository<Order, Guid>()
+            .GetAsync(new OrderWithPaymentIntentSpecification(paymentIntentId));
+        order.Status = PaymentStatus.PaymentReceived;
+        unitOfWork.GetRepository<Order, Guid>().Update(order);
+        await unitOfWork.SaveChangesAsync();
+    }
+
+    public async Task UpdatePaymentFaileddAsync(string paymentIntentId)
+    {
+        var order = await unitOfWork.GetRepository<Order, Guid>()
+            .GetAsync(new OrderWithPaymentIntentSpecification(paymentIntentId));
+        order.Status = PaymentStatus.PaymentFailed;
+        unitOfWork.GetRepository<Order, Guid>().Update(order);
+        await unitOfWork.SaveChangesAsync();
+    }
 }

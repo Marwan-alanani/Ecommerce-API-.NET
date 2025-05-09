@@ -21,6 +21,7 @@ public static class ApplicationServicesRegistration
         services.AddScoped<IBasketService, BasketService>();
         services.AddScoped<IOrderService, OrderService>();
         services.AddScoped<IProductService, ProductService>();
+        services.AddScoped<IPaymentService, PaymentService>();
 
         services.AddScoped<Func<IAuthenticationService>>(provider =>
         {
@@ -43,6 +44,10 @@ public static class ApplicationServicesRegistration
             return provider.GetService<IProductService>;
         });
 
+        services.AddScoped<Func<IPaymentService>>(provider =>
+        {
+            return provider.GetService<IPaymentService>;
+        });
         services.AddScoped<IServiceManager, ServiceManagerWithFactoryDelegate>();
         services.Configure<JWTOptions>(configuration.GetSection("JWTOptions"));
         return services;
